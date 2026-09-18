@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { ScenarioBanner, ScenarioLab, ScenarioTag, useScenarioLab } from "@/components/scenario-lab";
+import { fetchModel, formatScore } from "@/lib/baku-model-client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,27 +25,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Prediction = { driverId: string; driver: string; team: string; win_score: number };
-
-type ModelResponse = {
-  metadata: {
-    race: string;
-    circuit: string;
-    year: number;
-    race_date: string;
-    data_through: string;
-    score_label?: string;
-  };
-  predictions: Prediction[];
-};
-
-async function fetchModel(): Promise<ModelResponse> {
-  const response = await fetch("/api/model");
-  const body = (await response.json()) as ModelResponse & { error?: string };
-  if (!response.ok) throw new Error(body.error || "Prediction service unavailable");
-  return body;
-}
-
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -51,10 +32,6 @@ function formatDate(value: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${value}T12:00:00Z`));
-}
-
-function formatScore(score: number) {
-  return `${(score * 100).toFixed(1)}%`;
 }
 
 function ScoreRow({
