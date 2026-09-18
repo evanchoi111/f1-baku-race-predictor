@@ -94,9 +94,11 @@ function ScoreRow({
           style={{ width: `${Math.max((score / maxScore) * 100, 1.5)}%` }}
         />
       </span>
-      <span className="col-span-2 mt-1 text-sm font-semibold tabular-nums md:col-span-1 md:mt-0 md:self-center md:text-right md:text-base">
-        {formatScore(score)}{" "}
-        <span className="font-normal uppercase tracking-wider text-muted-foreground">Model score</span>
+      <span className="col-span-2 mt-1 flex flex-col items-start gap-0.5 md:col-span-1 md:mt-0 md:items-end md:self-center">
+        <span className="text-base font-semibold tabular-nums md:text-lg">{formatScore(score)}</span>
+        <span className="whitespace-nowrap text-[0.65rem] font-normal uppercase tracking-wider text-muted-foreground md:text-xs">
+          Model score
+        </span>
       </span>
     </li>
   );
@@ -164,7 +166,7 @@ function Index() {
   const maxScore = leader?.win_score ?? 1;
   const topFive = predictions.slice(0, 5);
   const rest = predictions.slice(5);
-  const scoreLabel = metadata.score_label || "Model score";
+  const scoreLabel = "Model score";
 
   return (
     <div className="min-h-screen bg-background">
