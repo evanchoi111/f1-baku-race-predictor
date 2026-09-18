@@ -1,0 +1,482 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper-deep: var(--paper-deep);
+  --color-racing: var(--racing);
+  --color-racing-dark: var(--racing-dark);
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+  --background: oklch(0.965 0.012 86);
+  --foreground: oklch(0.22 0.012 60);
+  --card: oklch(0.985 0.006 86);
+  --card-foreground: oklch(0.22 0.012 60);
+  --popover: oklch(0.985 0.006 86);
+  --popover-foreground: oklch(0.22 0.012 60);
+  --primary: oklch(0.55 0.22 27);
+  --primary-foreground: oklch(0.985 0.006 86);
+  --secondary: oklch(0.9 0.015 84);
+  --secondary-foreground: oklch(0.22 0.012 60);
+  --muted: oklch(0.91 0.012 84);
+  --muted-foreground: oklch(0.48 0.018 60);
+  --accent: oklch(0.55 0.22 27);
+  --accent-foreground: oklch(0.985 0.006 86);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.76 0.015 78);
+  --input: oklch(0.76 0.015 78);
+  --ring: oklch(0.55 0.22 27);
+  --ink-soft: oklch(0.39 0.018 60);
+  --paper-deep: oklch(0.9 0.018 84);
+  --racing: oklch(0.55 0.22 27);
+  --racing-dark: oklch(0.43 0.18 27);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    margin: 0;
+  }
+}
+
+@utility page-shell {
+  width: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+}
+
+@utility section-label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@utility section-label-inverse {
+  color: color-mix(in oklab, var(--primary-foreground) 68%, transparent);
+}
+
+.masthead {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 0.5rem solid var(--racing);
+  background: var(--foreground);
+  color: var(--primary-foreground);
+}
+
+.masthead::after {
+  position: absolute;
+  inset: auto -4rem 1.75rem auto;
+  width: 26rem;
+  height: 3rem;
+  content: "";
+  opacity: 0.08;
+  background: repeating-linear-gradient(90deg, var(--primary-foreground) 0 3rem, transparent 3rem 6rem);
+  transform: skewX(-24deg);
+}
+
+.masthead-topline,
+.masthead-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.masthead-topline {
+  padding-block: 0.7rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--primary-foreground) 26%, transparent);
+}
+
+.kicker {
+  position: relative;
+  z-index: 1;
+  margin-bottom: -0.6rem;
+  color: var(--racing);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.display-title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 24vw, 18rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.72;
+  text-transform: uppercase;
+}
+
+.masthead-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in oklab, var(--primary-foreground) 26%, transparent);
+}
+
+.track-mark {
+  position: absolute;
+  top: 2rem;
+  right: 3%;
+  width: 18rem;
+  height: 7rem;
+  border: 1.25rem solid color-mix(in oklab, var(--primary-foreground) 8%, transparent);
+  border-left-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-9deg);
+}
+
+.overview-grid {
+  display: grid;
+  border-block: 1px solid var(--foreground);
+}
+
+.top-pick-panel {
+  padding: 1.5rem 0 2rem;
+}
+
+.pick-lockup {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem;
+  margin-top: 2.25rem;
+}
+
+.pick-rank {
+  color: var(--racing);
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 0.75;
+}
+
+.pick-lockup h2 {
+  max-width: 11ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5.8rem);
+  font-weight: 800;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.pick-lockup p {
+  margin-top: 0.7rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pick-score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 0.45rem solid var(--racing);
+}
+
+.pick-score strong {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 900;
+  line-height: 0.8;
+}
+
+.pick-score span,
+.score-value span,
+.performance-stat span {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.race-brief {
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid var(--foreground);
+}
+
+.race-brief dl { margin-top: 1rem; }
+.race-brief dl div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-block: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+.race-brief dt { color: var(--muted-foreground); font-size: 0.72rem; text-transform: uppercase; }
+.race-brief dd { font-weight: 600; }
+
+.performance-band {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--foreground);
+  color: var(--primary-foreground);
+}
+
+.performance-context {
+  margin-top: 0.55rem;
+  color: color-mix(in oklab, var(--primary-foreground) 65%, transparent);
+  font-size: 0.8rem;
+}
+
+.performance-stat { display: flex; flex-direction: column; }
+.performance-stat strong {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 0.95;
+}
+.muted-stat { color: color-mix(in oklab, var(--primary-foreground) 66%, transparent); }
+.accent-stat { color: var(--racing); }
+
+.rankings-section { padding-top: 4rem; }
+.rankings-heading {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 0.35rem solid var(--foreground);
+}
+.rankings-heading h2 {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.rankings-heading > p { max-width: 28rem; color: var(--muted-foreground); font-size: 0.82rem; }
+.ranking-column-labels { display: none; }
+.ranking-list { list-style: none; }
+.ranking-row {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 5rem;
+  border-bottom: 1px solid var(--border);
+}
+.ranking-row-leader { background: var(--paper-deep); }
+.rank-number {
+  color: var(--muted-foreground);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+.ranking-row-leader .rank-number { color: var(--racing); }
+.driver-name {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.team-name { margin-top: 0.25rem; color: var(--muted-foreground); font-size: 0.7rem; text-transform: uppercase; }
+.score-track { display: none; height: 0.55rem; background: var(--paper-deep); }
+.score-fill { width: max(2px, var(--score-width)); height: 100%; background: var(--racing); }
+.score-value { display: flex; min-width: 4.6rem; flex-direction: column; align-items: flex-end; }
+.score-value strong { font-family: var(--font-display); font-size: 1.5rem; line-height: 1; }
+.score-value span { margin-top: 0.25rem; color: var(--muted-foreground); font-size: 0.58rem; }
+
+.method-note {
+  display: grid;
+  gap: 2rem;
+  margin-top: 4rem;
+  padding-block: 2rem 3rem;
+  border-top: 0.35rem solid var(--racing);
+}
+.method-note > div > p:last-child { max-width: 38rem; margin-top: 0.65rem; color: var(--ink-soft); line-height: 1.6; }
+.method-note dl { display: grid; gap: 0.75rem; }
+.method-note dl div { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 1rem; font-size: 0.75rem; }
+.method-note dt { color: var(--muted-foreground); text-transform: uppercase; }
+.method-note dd { font-weight: 600; }
+
+@media (min-width: 640px) {
+  .page-shell { width: min(100% - 4rem, 76rem); }
+  .performance-band { grid-template-columns: minmax(12rem, 1.5fr) repeat(3, minmax(7rem, 1fr)); align-items: end; }
+  .rankings-heading { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .ranking-row { grid-template-columns: 3rem minmax(12rem, 1.1fr) minmax(8rem, 2fr) 6rem; gap: 1.25rem; }
+  .score-track { display: block; }
+  .ranking-column-labels { display: grid; grid-template-columns: calc(3rem + 1.25rem + minmax(12rem, 1.1fr)) minmax(8rem, 2fr) 6rem; }
+}
+
+@media (min-width: 900px) {
+  .overview-grid { grid-template-columns: minmax(0, 1.65fr) minmax(18rem, 0.7fr); }
+  .top-pick-panel { padding-right: 3rem; }
+  .race-brief { padding-left: 3rem; border-top: 0; border-left: 1px solid var(--foreground); }
+  .ranking-column-labels {
+    grid-template-columns: calc(3rem + 1.25rem + minmax(12rem, 1.1fr)) minmax(8rem, 2fr) 6rem;
+    gap: 1.25rem;
+    padding-block: 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
+  .ranking-column-labels span:last-child { text-align: right; }
+  .method-note { grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .score-fill { animation: score-in 800ms cubic-bezier(.2,.8,.2,1) both; transform-origin: left; }
+  @keyframes score-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+.loading-screen { display: grid; min-height: 100vh; place-content: center; gap: 1rem; padding: 2rem; text-align: center; background: var(--background); }
+.loading-screen h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, 5rem); text-transform: uppercase; }
+.loading-screen p[role="alert"] { color: var(--racing); }
+.api-alert { margin-bottom: 1.5rem; padding: 0.9rem 1rem; border-left: 0.3rem solid var(--racing); background: var(--paper-deep); font-size: 0.82rem; }
+.scenario-panel { margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--foreground); background: var(--paper-deep); }
+.scenario-heading { display: grid; gap: 1.25rem; }
+.scenario-heading h2 { margin-top: 0.35rem; font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; line-height: 0.95; text-transform: uppercase; }
+.scenario-heading p:last-child { margin-top: 0.55rem; max-width: 35rem; color: var(--muted-foreground); font-size: 0.8rem; }
+.scenario-panel label { display: grid; gap: 0.4rem; color: var(--muted-foreground); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.scenario-heading select { min-width: min(100%, 17rem); height: 2.5rem; padding-inline: 0.75rem; border: 1px solid var(--foreground); border-radius: 0; background: var(--background); color: var(--foreground); font-size: 0.85rem; text-transform: none; }
+.scenario-control { margin-top: 2rem; padding-block: 1.25rem; border-block: 1px solid var(--border); }
+.slider-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+.slider-heading output { color: var(--racing); font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; line-height: 0.8; }
+.scenario-control [role="slider"] { width: 1.15rem; height: 1.15rem; border: 0.2rem solid var(--background); background: var(--racing); box-shadow: 0 0 0 1px var(--foreground); }
+.scenario-control [data-orientation="horizontal"] > span:first-child { height: 0.45rem; border-radius: 0; background: var(--border); }
+.slider-limits { display: flex; justify-content: space-between; margin-top: 0.6rem; color: var(--muted-foreground); font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+.scenario-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+.scenario-results div { display: flex; flex-direction: column; gap: 0.35rem; padding: 1.15rem 0; }
+.scenario-results div + div { padding-left: 1.25rem; border-left: 1px solid var(--border); }
+.scenario-results span { color: var(--muted-foreground); font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+.scenario-results strong { font-family: var(--font-display); font-size: 2rem; line-height: 1; }
+.scenario-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 1.5rem; }
+.scenario-actions button { border-radius: 0; text-transform: uppercase; }
+.predict-button { background: var(--racing); }
+.scenario-actions span { color: var(--muted-foreground); font-size: 0.7rem; }
+@media (min-width: 640px) { .scenario-panel { padding: 2rem; } .scenario-heading { grid-template-columns: 1fr auto; align-items: end; } }
