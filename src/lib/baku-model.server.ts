@@ -37,7 +37,9 @@ export function validateInputs(value: unknown): ModelInput[] {
 
 export function getModelResponse(inputs: ModelInput[] = data.inputs) {
   const predictions = predictField(data.model, inputs);
-  const { predictions: _snapshotPredictions, ...metadata } = data.metadata;
+  // Accuracy/backtest evaluation and the bundled display snapshot stay on the
+  // server; they must never appear in API responses or the UI.
+  const { predictions: _snapshotPredictions, evaluation: _evaluation, ...metadata } = data.metadata;
   return { metadata, inputs, predictions };
 }
 
