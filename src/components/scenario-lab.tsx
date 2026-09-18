@@ -166,7 +166,7 @@ function FinishSlider({
       max={FINISH_MAX}
       step={FINISH_STEP}
       value={[value]}
-      disabled={disabled}
+      disabled={disabled === true}
       onValueChange={(next) => {
         const [first] = next;
         if (typeof first === "number") onChange(first);
@@ -194,7 +194,7 @@ function Stat({
 }: {
   label: string;
   value: string;
-  caption?: string;
+  caption?: string | undefined;
   emphasis?: boolean;
   pending?: boolean;
 }) {
