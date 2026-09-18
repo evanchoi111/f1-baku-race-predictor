@@ -6,9 +6,11 @@ export const Route = createFileRoute("/api/model")({
     handlers: {
       GET: async () => {
         try {
+          // Reference-case verification stays internal: a failure returns a
+          // 500, but the check results themselves are never exposed.
           const verification = verifyReferenceCases();
-          if (!verification.passed) return Response.json({ error: "Model verification failed", verification }, { status: 500 });
-          return Response.json({ ...getModelResponse(), verification }, { headers: { "Cache-Control": "no-store" } });
+          if (!verification.passed) return Response.json({ error: "Model verification failed" }, { status: 500 });
+          return Response.json(getModelResponse(), { headers: { "Cache-Control": "no-store" } });
         } catch (error) {
           const message = error instanceof Error ? error.message : "Unable to load model";
           return Response.json({ error: message }, { status: 500 });
