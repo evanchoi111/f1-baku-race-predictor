@@ -209,14 +209,19 @@ function Index() {
           </p>
         )}
 
+        {scenario && <ScenarioBanner scenario={scenario} onReset={lab.reset} />}
+
         {leader && (
           <section
-            aria-label="Model's top pick"
-            className="relative border-2 border-foreground bg-card p-6 md:p-10"
+            id="top-pick"
+            aria-label={isScenario ? "Scenario top pick" : "Model's top pick"}
+            aria-busy={lab.isRunning}
+            className={`relative border-2 border-foreground bg-card p-6 md:p-10 ${lab.isRunning ? "opacity-70" : ""}`}
           >
             <div className="absolute left-0 top-0 h-2 w-full bg-primary" aria-hidden="true" />
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              The model's top pick
+            <p className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              {isScenario && <ScenarioTag />}
+              <span>{isScenario ? "Scenario top pick" : "The model's top pick"}</span>
             </p>
             <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="min-w-0">
@@ -232,16 +237,21 @@ function Index() {
                   {formatScore(leader.win_score)}
                 </span>
                 <span className="mt-2 block text-xs uppercase tracking-widest text-muted-foreground">
-                  {scoreLabel}
+                  {isScenario ? `Scenario ${scoreLabel.toLowerCase()}` : scoreLabel}
                 </span>
               </div>
             </div>
           </section>
         )}
 
-        <section aria-label="Top five drivers" className="mt-12 md:mt-16">
-          <h3 className="border-b-2 border-foreground pb-3 font-display text-2xl font-bold uppercase tracking-wide md:text-3xl">
-            Top five drivers
+        <section
+          aria-label={isScenario ? "Top five drivers (scenario)" : "Top five drivers"}
+          aria-busy={lab.isRunning}
+          className={`mt-12 md:mt-16 ${lab.isRunning ? "opacity-70" : ""}`}
+        >
+          <h3 className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-foreground pb-3 font-display text-2xl font-bold uppercase tracking-wide md:text-3xl">
+            <span>Top five drivers</span>
+            {isScenario && <ScenarioTag />}
           </h3>
           <ol className="divide-y divide-border">
             {topFive.map((prediction, index) => (
@@ -253,13 +263,19 @@ function Index() {
                 score={prediction.win_score}
                 maxScore={maxScore}
                 isLeader={index === 0}
+                note={rowNote(prediction.driverId, index + 1)}
+                highlight={scenario?.driverId === prediction.driverId}
               />
             ))}
           </ol>
         </section>
 
         {rest.length > 0 && (
-          <section aria-label="Full field" className="mt-4">
+          <section
+            aria-label={isScenario ? "Full field (scenario)" : "Full field"}
+            aria-busy={lab.isRunning}
+            className={`mt-4 ${lab.isRunning ? "opacity-70" : ""}`}
+          >
             {!showAll && (
               <button
                 onClick={() => setShowAll(true)}
@@ -281,6 +297,8 @@ function Index() {
                       score={prediction.win_score}
                       maxScore={maxScore}
                       isLeader={false}
+                      note={rowNote(prediction.driverId, index + 6)}
+                      highlight={scenario?.driverId === prediction.driverId}
                     />
                   ))}
                 </ol>
@@ -305,6 +323,8 @@ function Index() {
             winning.
           </p>
         </aside>
+
+        <ScenarioLab {...lab} />
       </main>
 
       <footer className="border-t border-border">
