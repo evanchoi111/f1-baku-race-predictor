@@ -153,12 +153,20 @@ function Index() {
     );
   }
 
-  const { metadata, predictions } = data;
+  const { metadata } = data;
+  const { scenario, activePredictions: predictions } = lab;
+  const isScenario = scenario !== null;
   const leader = predictions[0];
   const maxScore = leader?.win_score ?? 1;
   const topFive = predictions.slice(0, 5);
   const rest = predictions.slice(5);
   const scoreLabel = "Model score";
+  const originalRankById = new Map(data.predictions.map((row, index) => [row.driverId, index + 1]));
+  const rowNote = (driverId: string, rank: number) => {
+    if (!scenario || driverId !== scenario.driverId) return undefined;
+    const wasRank = originalRankById.get(driverId);
+    return wasRank === undefined || wasRank === rank ? "Scenario driver" : `Scenario driver · was P${wasRank}`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
