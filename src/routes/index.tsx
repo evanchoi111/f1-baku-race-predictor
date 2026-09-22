@@ -41,6 +41,8 @@ function ScoreRow({
   score,
   maxScore,
   isLeader,
+  note,
+  highlight = false,
 }: {
   rank: number;
   driver: string;
@@ -48,9 +50,15 @@ function ScoreRow({
   score: number;
   maxScore: number;
   isLeader: boolean;
+  note?: string | undefined;
+  highlight?: boolean;
 }) {
   return (
-    <li className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 py-3 md:grid-cols-[3rem_minmax(11rem,14rem)_1fr_6.5rem] md:gap-x-5">
+    <li
+      className={`grid grid-cols-[2rem_1fr] items-baseline gap-x-3 py-3 md:grid-cols-[3rem_minmax(11rem,14rem)_1fr_6.5rem] md:gap-x-5 ${
+        highlight ? "-mx-3 border-l-4 border-primary bg-card px-3 md:-mx-4 md:px-4" : ""
+      }`}
+    >
       <span className="font-display text-2xl font-bold tabular-nums text-muted-foreground md:text-3xl">
         {rank}
       </span>
@@ -61,6 +69,11 @@ function ScoreRow({
         <span className="block text-xs uppercase tracking-widest text-muted-foreground md:text-sm">
           {team}
         </span>
+        {note && (
+          <span className="mt-1 block text-[0.65rem] font-semibold uppercase tracking-widest text-primary md:text-xs">
+            {note}
+          </span>
+        )}
       </span>
       <span
         className="col-span-2 mt-2 h-2.5 w-full bg-muted md:col-span-1 md:mt-0 md:self-center"
@@ -107,6 +120,8 @@ function Index() {
     retry: 1,
     staleTime: 5 * 60_000,
   });
+  // Must run before the early returns below so hook order stays stable.
+  const lab = useScenarioLab(data);
 
   if (isPending) {
     return (
@@ -138,12 +153,20 @@ function Index() {
     );
   }
 
-  const { metadata, predictions } = data;
+  const { metadata } = data;
+  const { scenario, activePredictions: predictions } = lab;
+  const isScenario = scenario !== null;
   const leader = predictions[0];
   const maxScore = leader?.win_score ?? 1;
   const topFive = predictions.slice(0, 5);
   const rest = predictions.slice(5);
   const scoreLabel = "Model score";
+  const originalRankById = new Map(data.predictions.map((row, index) => [row.driverId, index + 1]));
+  const rowNote = (driverId: string, rank: number) => {
+    if (!scenario || driverId !== scenario.driverId) return undefined;
+    const wasRank = originalRankById.get(driverId);
+    return wasRank === undefined || wasRank === rank ? "Scenario driver" : `Scenario driver · was P${wasRank}`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -186,14 +209,19 @@ function Index() {
           </p>
         )}
 
+        {scenario && <ScenarioBanner scenario={scenario} onReset={lab.reset} />}
+
         {leader && (
           <section
-            aria-label="Model's top pick"
-            className="relative border-2 border-foreground bg-card p-6 md:p-10"
+            id="top-pick"
+            aria-label={isScenario ? "Scenario top pick" : "Model's top pick"}
+            aria-busy={lab.isRunning}
+            className={`relative border-2 border-foreground bg-card p-6 md:p-10 ${lab.isRunning ? "opacity-70" : ""}`}
           >
             <div className="absolute left-0 top-0 h-2 w-full bg-primary" aria-hidden="true" />
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              The model's top pick
+            <p className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              {isScenario && <ScenarioTag />}
+              <span>{isScenario ? "Scenario top pick" : "The model's top pick"}</span>
             </p>
             <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="min-w-0">
@@ -209,16 +237,21 @@ function Index() {
                   {formatScore(leader.win_score)}
                 </span>
                 <span className="mt-2 block text-xs uppercase tracking-widest text-muted-foreground">
-                  {scoreLabel}
+                  {isScenario ? `Scenario ${scoreLabel.toLowerCase()}` : scoreLabel}
                 </span>
               </div>
             </div>
           </section>
         )}
 
-        <section aria-label="Top five drivers" className="mt-12 md:mt-16">
-          <h3 className="border-b-2 border-foreground pb-3 font-display text-2xl font-bold uppercase tracking-wide md:text-3xl">
-            Top five drivers
+        <section
+          aria-label={isScenario ? "Top five drivers (scenario)" : "Top five drivers"}
+          aria-busy={lab.isRunning}
+          className={`mt-12 md:mt-16 ${lab.isRunning ? "opacity-70" : ""}`}
+        >
+          <h3 className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-foreground pb-3 font-display text-2xl font-bold uppercase tracking-wide md:text-3xl">
+            <span>Top five drivers</span>
+            {isScenario && <ScenarioTag />}
           </h3>
           <ol className="divide-y divide-border">
             {topFive.map((prediction, index) => (
@@ -230,13 +263,19 @@ function Index() {
                 score={prediction.win_score}
                 maxScore={maxScore}
                 isLeader={index === 0}
+                note={rowNote(prediction.driverId, index + 1)}
+                highlight={scenario?.driverId === prediction.driverId}
               />
             ))}
           </ol>
         </section>
 
         {rest.length > 0 && (
-          <section aria-label="Full field" className="mt-4">
+          <section
+            aria-label={isScenario ? "Full field (scenario)" : "Full field"}
+            aria-busy={lab.isRunning}
+            className={`mt-4 ${lab.isRunning ? "opacity-70" : ""}`}
+          >
             {!showAll && (
               <button
                 onClick={() => setShowAll(true)}
@@ -258,6 +297,8 @@ function Index() {
                       score={prediction.win_score}
                       maxScore={maxScore}
                       isLeader={false}
+                      note={rowNote(prediction.driverId, index + 6)}
+                      highlight={scenario?.driverId === prediction.driverId}
                     />
                   ))}
                 </ol>
@@ -282,6 +323,8 @@ function Index() {
             winning.
           </p>
         </aside>
+
+        <ScenarioLab {...lab} />
       </main>
 
       <footer className="border-t border-border">
