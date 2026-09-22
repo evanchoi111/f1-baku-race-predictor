@@ -41,6 +41,8 @@ function ScoreRow({
   score,
   maxScore,
   isLeader,
+  note,
+  highlight = false,
 }: {
   rank: number;
   driver: string;
@@ -48,9 +50,15 @@ function ScoreRow({
   score: number;
   maxScore: number;
   isLeader: boolean;
+  note?: string | undefined;
+  highlight?: boolean;
 }) {
   return (
-    <li className="grid grid-cols-[2rem_1fr] items-baseline gap-x-3 py-3 md:grid-cols-[3rem_minmax(11rem,14rem)_1fr_6.5rem] md:gap-x-5">
+    <li
+      className={`grid grid-cols-[2rem_1fr] items-baseline gap-x-3 py-3 md:grid-cols-[3rem_minmax(11rem,14rem)_1fr_6.5rem] md:gap-x-5 ${
+        highlight ? "-mx-3 border-l-4 border-primary bg-card px-3 md:-mx-4 md:px-4" : ""
+      }`}
+    >
       <span className="font-display text-2xl font-bold tabular-nums text-muted-foreground md:text-3xl">
         {rank}
       </span>
@@ -61,6 +69,11 @@ function ScoreRow({
         <span className="block text-xs uppercase tracking-widest text-muted-foreground md:text-sm">
           {team}
         </span>
+        {note && (
+          <span className="mt-1 block text-[0.65rem] font-semibold uppercase tracking-widest text-primary md:text-xs">
+            {note}
+          </span>
+        )}
       </span>
       <span
         className="col-span-2 mt-2 h-2.5 w-full bg-muted md:col-span-1 md:mt-0 md:self-center"
