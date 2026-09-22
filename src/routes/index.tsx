@@ -120,6 +120,8 @@ function Index() {
     retry: 1,
     staleTime: 5 * 60_000,
   });
+  // Must run before the early returns below so hook order stays stable.
+  const lab = useScenarioLab(data);
 
   if (isPending) {
     return (
